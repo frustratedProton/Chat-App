@@ -1,30 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import io from 'socket.io-client';
+import useStore from './hooks/store';
 
 const socket = io('http://localhost:3000');
 
 function App() {
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
+    const { message, messages, setMessage, setMessages, clearMessage } =
+        useStore();
 
     useEffect(() => {
-        // Listen for incoming messages from the server
         socket.on('chatMessage', (msg) => {
-            setMessages((prevMessages) => [...prevMessages, msg]);
+            setMessages(msg);
         });
 
-        // Clean up socket event listener when component unmounts
         return () => {
             socket.off('chatMessage');
         };
-    }, []);
+    }, [setMessages]);
 
-    // Send message when form is submitted
     const sendMessage = (e) => {
         e.preventDefault();
         if (message.trim()) {
-            socket.emit('chatMessage', message); // Emit the message to the server
-            setMessage(''); // Clear the input after sending
+            socket.emit('chatMessage', message); 
+            clearMessage();
         }
     };
 
