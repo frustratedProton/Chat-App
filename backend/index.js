@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import handleSocketConnection from './roomManager.js';
 
 const app = express();
 const server = createServer(app);
@@ -12,16 +13,17 @@ app.use(
     cors({
         origin: 'http://localhost:5173',
         methods: ['GET', 'POST'],
+        credentials: true,
     })
 );
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:5173', 
+        origin: 'http://localhost:5173',
         methods: ['GET', 'POST'],
+        credentials: true,
     },
 });
-
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -40,6 +42,8 @@ io.on('connection', (socket) => {
         io.emit('chatMessage', msg); // Broadcast the message to all clients
     });
 });
+
+handleSocketConnection(io);
 
 const PORT = 3000;
 
