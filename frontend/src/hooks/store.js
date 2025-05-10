@@ -3,11 +3,14 @@ import { create } from 'zustand';
 const useStore = create((set) => ({
     roomId: '',
     message: '',
+    username: '',
     messages: {},
 
     setRoomId: (roomId) => set({ roomId }),
 
     setMessage: (message) => set({ message }),
+
+    setUsername: (username) => set({ username }),
 
     addMessage: (roomId, msg) =>
         set((state) => ({
