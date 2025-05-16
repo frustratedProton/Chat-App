@@ -13,12 +13,15 @@ const useStore = create((set) => ({
     setUsername: (username) => set({ username }),
 
     addMessage: (roomId, msg) =>
-        set((state) => ({
-            messages: {
-                ...state.messages,
-                [roomId]: [...(state.messages[roomId] || []), msg],
-            },
-        })),
+        set((state) => {
+            console.log(`Adding message to room: ${roomId}`, msg); // Log the message being added
+            return {
+                messages: {
+                    ...state.messages,
+                    [roomId]: [...(state.messages[roomId] || []), msg],
+                },
+            };
+        }),
 
     clearMessage: () => set({ message: '' }),
 

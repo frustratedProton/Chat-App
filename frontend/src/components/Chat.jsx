@@ -9,7 +9,13 @@ const Chat = ({
 }) => {
     const sendMessage = (e) => {
         e.preventDefault();
+        console.log(
+            `RoomID: ${roomId}, username: ${username}, message: ${message}`
+        );
         if (message.trim()) {
+            console.log(
+                `Sending message from ${username} in room ${roomId}: ${message}`
+            );
             socket.emit('chatMessage', { roomId, username, message });
             clearMessage();
         }

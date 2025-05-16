@@ -7,7 +7,6 @@ const useSocket = (url) => {
     useEffect(() => {
         const newSocket = io(url, {
             withCredentials: true,
-            transports: ['websocket', 'polling'],
         });
         setSocket(newSocket);
 

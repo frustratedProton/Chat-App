@@ -5,6 +5,8 @@ import { dirname, join } from 'path';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import handleSocketConnection from './roomManager.js';
+import sqlite from 'sqlite3'
+// import db from './db.js'; 
 
 const app = express();
 const server = createServer(app);
@@ -27,23 +29,25 @@ const io = new Server(server, {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const db = new sqlite.Database('./chat-app.db')
+
 app.get('/', (req, res) => {
     res.send('Chat Server is running');
 });
 
 io.on('connection', (socket) => {
-    console.log('A user connected');
+    console.log('Chat Server is running');
 
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
+    // socket.on('disconnect', () => {
+    //     console.log('User disconnected');
+    // });
 
-    socket.on('chatMessage', (msg) => {
-        io.emit('chatMessage', msg); // Broadcast the message to all clients
-    });
+    // socket.on('chatMessage', (msg) => {
+    //     io.emit('chatMessage', msg); // Broadcast the message to all clients
+    // });
 });
 
-handleSocketConnection(io);
+handleSocketConnection(io, db);
 
 const PORT = 3000;
 
